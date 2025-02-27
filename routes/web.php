@@ -7,5 +7,5 @@ Route::get('/', function () {
 });
 
 Route::get('/r', function () {
-    return view(view: 'RegisterPage');
+    return view(view: 'homePage');
 });
