@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" href="/img/image14.png">
+
   <title>Login Page</title>
   <style>
     /* Scaling container */
@@ -48,7 +51,7 @@
       left: 0px;
       top: 48px;
       position: absolute;
-      background-color: rgba(41, 220, 62, 0.2471);
+      background-color: rgb(62 62 62 / 25%);
       border-radius: 33px;
     }
 
@@ -58,7 +61,7 @@
       left: 7px;
       top: 7px;
       position: absolute;
-      background: #29DC3E;
+      background: #FACF43;
       border-radius: 90px;
       /* Animasi transisi */
       transition: left 0.3s ease, width 0.3s ease;
@@ -109,6 +112,15 @@
       left: 0px;
       top: 159px;
       position: absolute;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .Group228.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none; /* agar form yang tersembunyi tidak bisa diklik */
     }
 
     .Group225 {
@@ -320,10 +332,10 @@
     }
 
 
-    /* Form Register */
+    /* Form Register
     .Group228.register {
       display: none;
-    }
+    } */
 
     .Group228.register .Group225 {
       top: 0px;
@@ -404,7 +416,7 @@
             word-wrap: break-word;
             padding: 11px 60px;
             border: none;
-            background-color: #29dc3e;
+            background-color: #FACF43;
             border-radius: 50px;
         ">Login</button>
         </div>
@@ -416,7 +428,7 @@
 
 
         <!-- Form register -->
-        <div data-layer="Group 228" class="Group228 register">
+        <div data-layer="Group 228" class="Group228 register hidden">
           <div data-layer="Lorem Ipsum is simply dummy text of the printing and typesetting industry." class="LoremIpsum">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           </div>
@@ -470,7 +482,7 @@
               word-wrap: break-word;
               padding: 11px 60px;
               border: none;
-              background-color: #29dc3e;
+              background-color: #FACF43;
               border-radius: 50px;
           ">Register</button>
           </div>
@@ -532,6 +544,31 @@
       const type = passwordInputRegister.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordInputRegister.setAttribute('type', type);
     });
+  </script>
+
+  <script>
+    function switchTab(position, width) {
+    activeIndicator.style.left = position;
+    activeIndicator.style.width = width;
+
+    if (position === '7px') { // Tab Login
+        loginTab.classList.add('active-tab');
+        loginTab.classList.remove('inactive-tab');
+        registerTab.classList.add('inactive-tab');
+        registerTab.classList.remove('active-tab');
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        loginButton.textContent = 'Login';
+    } else { // Tab Register
+        registerTab.classList.add('active-tab');
+        registerTab.classList.remove('inactive-tab');
+        loginTab.classList.add('inactive-tab');
+        loginTab.classList.remove('active-tab');
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        loginButton.textContent = 'Register';
+    }
+    }
   </script>
 </body>
 </html>
