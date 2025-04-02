@@ -228,21 +228,21 @@
           </a>
         </li>
         <li>
+          <a href="/jadwal_anggota" class="dash">
+            <i class="fa fa-calendar-alt"></i>
+            <span class="menu-text">Jadwal Anggota</span>
+          </a>
+        </li>
+        <li>
           <a href="/stok-barang">
             <i class="fa fa-box"></i>
-            <span class="menu-text">Manajemen Stok</span>
+            <span class="menu-text">Stok Barang</span>
           </a>
         </li>
         <li>
           <a href="/keuangan">
             <i class="fa fa-money-bill-wave"></i>
-            <span class="menu-text">Manajemen Keuangan</span>
-          </a>
-        </li>
-        <li>
-          <a href="/laporan" class="dash">
-            <i class="fa fa-file-alt"></i>
-            <span class="menu-text">Laporan</span>
+            <span class="menu-text">Catatan Keuangan</span>
           </a>
         </li>
         <li>

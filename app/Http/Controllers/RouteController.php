@@ -26,8 +26,8 @@ class RouteController extends Controller
         return view("keuangan");
     }
 
-    public function laporan(){
-        return view("laporan");
+    public function jadwal_anggota(){
+        return view("jadwal_anggota");
     }
 
     public function loginRegister(){
