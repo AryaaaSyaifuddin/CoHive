@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RouteController extends Controller
 {
@@ -11,7 +13,11 @@ class RouteController extends Controller
     }
 
     public function profile(){
-        return view("profile");
+        $user = Auth::user();
+        // Cari data profile, jika belum ada buat instance baru
+        $profile = $user->profile ?? new Profile(['user_id' => $user->id]);
+
+        return view('profile', compact('user', 'profile'));
     }
 
     public function anggota(){

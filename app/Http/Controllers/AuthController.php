@@ -10,28 +10,38 @@ use Illuminate\Validation\Rules;
 
 class AuthController extends Controller
 {
-    public function showRegistrationForm()
+    public function login(Request $request)
     {
-        return view('auth.register');
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = User::where('username', $request->username)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            return redirect('/')->with('success', 'Login berhasil!');
+        } else {
+            return redirect()->back()->with('error', 'Username atau password salah');
+        }
     }
 
     public function register(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => 'required|email|unique:user,email',
+            'username' => 'required|unique:user,username',
+            'password' => 'required|min:6',
         ]);
 
-        $user = User::create([
+        User::create([
+            'name' => 'Unknown',
             'email' => $request->email,
             'username' => $request->username,
             'password' => Hash::make($request->password),
         ]);
 
-        // Perbaikan login dengan guard yang benar
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
+        return redirect()->back()->with('success', 'Registration successful! You can now log in.');
     }
 }

@@ -306,7 +306,7 @@
 
   /* Styling untuk input field */
   .inputField {
-    width: 435px;
+    width: 395px;
     height: 54px;
     border: none;
     outline: none;
@@ -315,8 +315,8 @@
     font-family: Poppins;
     border-radius: 40px;
     position: absolute;
-    top: 36px; /* Sama dengan posisi Rectangle80 */
-    left: 0;
+    top: 37px;
+    left: 1px;
     background: transparent;
     color: black;
   }

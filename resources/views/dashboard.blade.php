@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>CoHive</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <style>
@@ -204,6 +205,32 @@
   </style>
 </head>
 <body>
+    @if (session('error'))
+   <script>
+      Swal.fire({
+         title: 'Error!',
+         text: '{{ session("error") }}',
+         icon: 'error',
+         confirmButtonText: 'OK',
+         timer: 3000,
+         timerProgressBar: true,
+      });
+   </script>
+   @endif
+
+   @if (session('success'))
+   <script>
+      Swal.fire({
+         title: 'Success!',
+         text: '{{ session("success") }}',
+         icon: 'success',
+         confirmButtonText: 'OK',
+         timer: 3000,
+         timerProgressBar: true,
+      });
+   </script>
+   @endif
+
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
       <div class="profile">
@@ -262,7 +289,9 @@
     <div class="main-container">
       <div class="header">
         <h1>CoHive</h1>
-        <button class="logout-btn"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <a href="{{ route('logout') }}" class="logout-btn" style="text-decoration: none">
+            <i class="fa fa-sign-out-alt"></i> Logout
+        </a>
         <div class="shape hex2"></div>
       </div>
       <div class="content">

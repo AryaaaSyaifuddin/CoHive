@@ -11,7 +11,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'user';
+
     protected $fillable = [
+        'name',
         'username',
         'email',
         'password',
@@ -21,4 +24,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }

@@ -201,6 +201,61 @@
     .tilt {
       transform: rotate(-57deg);
     }
+    .dashboard-wrapper {
+    padding: 30px;
+    position: relative;
+    z-index: 2;
+    }
+
+    .dashboard-box {
+    display: flex;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 1px solid #ccc;
+    overflow: hidden;
+    }
+
+    .dashboard-box .section {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    }
+
+    .dashboard-box .section:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    right: 0;
+    height: 80%;
+    width: 1px;
+    background-color: #aaa;
+    }
+
+    .dashboard-box h4 {
+    font-size: 15px;
+    font-weight: 600;
+    }
+
+    .dashboard-box h2 {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 5px 0;
+    }
+
+    .dashboard-box p {
+    font-size: 12px;
+    color: #666;
+    }
+
+    .text-red {
+    color: red;
+    }
+
   </style>
 </head>
 <body>
@@ -268,6 +323,44 @@
       <div class="content">
         <div class="shape hex1 tilt"></div>
         <div class="shape hex3"></div>
+
+        <div class="dashboard-wrapper">
+            <div class="dashboard-box">
+              <div class="section">
+                <h4>Kategori</h4>
+                <h2>12</h2>
+                <p>Last 7 days</p>
+              </div>
+              <div class="section">
+                <h4>Total Barang Masuk</h4>
+                <div>
+                  <h2>22</h2>
+                  <p>Last 7 days</p>
+                  <h2>Rp 120.000</h2>
+                  <p>nilai Harga</p>
+                </div>
+              </div>
+              <div class="section">
+                <h4>Data Barang Keluar</h4>
+                <div>
+                  <h2>22</h2>
+                  <p>Last 7 days</p>
+                  <h2>Rp 120.000</h2>
+                  <p>nilai Harga</p>
+                </div>
+              </div>
+              <div class="section">
+                <h4 class="text-red">Stok Rendah</h4>
+                <div>
+                  <h2>7</h2>
+                  <p>Dipesan</p>
+                  <h2>2</h2>
+                  <p>Stok Tersedia saat ini</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
       </div>
     </div>
   </div>
