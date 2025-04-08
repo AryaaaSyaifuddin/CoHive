@@ -20,6 +20,8 @@ Route::middleware([LoginMiddleware::class])->group(function () {
     Route::get("/anggota", [RouteController::class, "anggota"]);
 
     Route::get("/stok-barang", [RouteController::class, "stokBarang"]);
+    Route::post('/barangs', [BarangController::class, 'store'])->name('barangs.store');
+    Route::get('/barang/detail/{id}', [BarangController::class, 'detail'])->name('produk.detail');
 
     Route::get("/keuangan", [RouteController::class, "keuangan"]);
 
