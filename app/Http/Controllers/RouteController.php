@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,8 @@ class RouteController extends Controller
     }
 
     public function stokBarang(){
-        return view("stok-barang");
+        $barangs = Barang::all();
+        return view("stok-barang", compact('barangs'));
     }
 
     public function keuangan(){

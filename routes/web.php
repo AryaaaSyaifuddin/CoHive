@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\HarusLogoutMiddleware;
 use App\Http\Middleware\LoginMiddleware;
@@ -21,7 +22,8 @@ Route::middleware([LoginMiddleware::class])->group(function () {
 
 
     Route::get("/stok-barang", [RouteController::class, "stokBarang"]);
-
+    Route::post('/barangs', [BarangController::class, 'store'])->name('barangs.store');
+    Route::get('/barang/detail/{id}', [BarangController::class, 'detail'])->name('produk.detail');
 
     Route::get("/keuangan", [RouteController::class, "keuangan"]);
 

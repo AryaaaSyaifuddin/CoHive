@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>CoHive</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <style>
@@ -256,9 +257,438 @@
     color: red;
     }
 
+    .produk-container {
+        margin-top: 30px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 40px;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .produk-container h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+    }
+
+    .produk-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    }
+
+    .data-select-label select {
+    padding: 3px 6px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 12px;
+    }
+
+    .produk-actions {
+    display: flex;
+    gap: 6px;
+    }
+
+    .btn {
+    padding: 4px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    }
+
+    .btn-blue {
+    background-color: #007bff;
+    color: white;
+    }
+
+    .btn-gray {
+    background-color: #f1f1f1;
+    color: black;
+    border: 1px solid #ccc;
+    }
+
+    .produk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    }
+
+    .produk-table th,
+    .produk-table td {
+    border: 1px solid #333;
+    padding: 6px 8px;
+    text-align: left;
+    }
+
+    .produk-table thead {
+    background-color: #f7f7f7;
+    }
+
+    .produk-table tbody tr:nth-child(odd) {
+    background-color: #fff8d4;
+    }
+
+    .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 10px;
+    }
+
+    .pagination button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    }
+
+
+    .btn-blue {
+    background-color: #007bff;
+    color: white;
+    }
+
+    .btn-gray {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    }
+
+    .btn-yellow {
+    background-color: #ffeb3b;
+    border: none;
+    }
+
+    /* Popup styling */
+    .popup-form {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    }
+
+    .popup-content {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    font-size: 12px;
+    }
+
+    .popup-content h2 {
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: bold;
+    }
+
+    .popup-content label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    }
+
+    .popup-content input,
+    .popup-content select {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+
+    .image-upload {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+    }
+
+    .image-box {
+    width: 38%;
+    height: 180px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    }
+
+    .image-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    }
+    .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    }
+
+    /****************************/
+/* Popup Overlay & Container*/
+/****************************/
+.detail-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: none; /* default hidden */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.detail-popup-content {
+  background: #fff;
+  width: 1100px; /* Lebar konten lebih besar */
+  max-width: 95%;
+  border-radius: 8px;
+  padding: 35px;
+  position: relative;
+  font-family: "Arial", sans-serif;
+  font-size: 12px; /* Font lebih kecil */
+  color: #333;
+}
+
+/****************************/
+/* Header Section           */
+/****************************/
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.detail-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-product-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.detail-tabs {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0 0;
+  display: flex;
+  gap: 120px;
+}
+
+.detail-tabs li {
+  cursor: pointer;
+  padding: 4px 0;
+  color: #666;
+  position: relative;
+}
+
+.detail-tabs li.active {
+  font-weight: bold;
+  color: #000;
+  border-bottom: 3px solid #ffc107; /* Garis kuning di tab aktif */
+}
+
+.detail-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tombol Edit & Download */
+.detail-btn-edit,
+.detail-btn-download {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Tombol Close (X) */
+.detail-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/****************************/
+/* Body Section             */
+/****************************/
+.detail-body {
+  display: flex;
+  gap: 50px;
+}
+
+/* Bagian Kiri */
+.detail-left {
+  flex: 1;
+  min-width: 320px;
+}
+
+.detail-left h3 {
+  margin-top: 0;
+  margin-bottom: 17px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.detail-row .label {
+  color: #666;
+  font-weight: 400;
+}
+
+.detail-row .value {
+  font-weight: 600;
+  margin-right: 195px;
+}
+
+/* Tabel Lokasi Stok */
+.detail-lokasi-stok table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.detail-lokasi-stok th,
+.detail-lokasi-stok td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.detail-lokasi-stok th {
+  background-color: #f9f9f9;
+}
+
+/* Bagian Kanan */
+.detail-right {
+  flex: 1;
+  max-width: 295px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+/****************************/
+/* Gambar Produk & Stok     */
+/****************************/
+.detail-product-image {
+    display: flex;
+    justify-content: end;
+}
+
+.detail-product-image img {
+    max-width: 70%;
+    border-radius: 4px;
+    padding: 25px;
+}
+
+.detail-stock-info {
+    color: #E9B300;
+    width: 75%;
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+
+.stock-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.stock-label {
+    margin-bottom: 10px;
+    color: #E9B300;
+    font-weight: 500;
+}
+
+.stock-value {
+  font-weight: 600;
+}
+
+/****************************/
+/* Responsive               */
+/****************************/
+@media (max-width: 768px) {
+  .detail-body {
+    flex-direction: column;
+  }
+
+  .detail-popup-content {
+    width: 90%;
+    max-width: 600px;
+  }
+}
+
+
   </style>
 </head>
 <body>
+
+    @if (session('error'))
+    <script>
+       Swal.fire({
+          title: 'Error!',
+          text: '{{ session("error") }}',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          timer: 3000,
+          timerProgressBar: true,
+       });
+    </script>
+    @endif
+
+    @if (session('success'))
+    <script>
+       Swal.fire({
+          title: 'Success!',
+          text: '{{ session("success") }}',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          timer: 3000,
+          timerProgressBar: true,
+       });
+    </script>
+    @endif
+
+
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
       <div class="profile">
@@ -323,8 +753,8 @@
       <div class="content">
         <div class="shape hex1 tilt"></div>
         <div class="shape hex3"></div>
-
         <div class="dashboard-wrapper">
+            <h2 style="font-size: 19px; margin-bottom: 15px;">Stock Barang</h2>
             <div class="dashboard-box">
               <div class="section">
                 <h4>Kategori</h4>
@@ -359,11 +789,243 @@
                 </div>
               </div>
             </div>
-          </div>
+
+            <div class="produk-container">
+                <h2>Daftar Produk</h2>
+
+                <div class="produk-controls">
+                  <label class="data-select-label">
+                    Tampilkan
+                    <select>
+                      <option>10</option>
+                      <option>25</option>
+                      <option>50</option>
+                    </select>
+                    Data
+                  </label>
+
+                  <div class="produk-actions">
+                    <button class="btn btn-blue" onclick="openPopup()">Add Product</button>
+                    <button class="btn btn-gray">Filters</button>
+                  </div>
+                </div>
+
+                <table class="produk-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>ID Barang</th>
+                      <th>Nama Barang</th>
+                      <th>Jenis Barang</th>
+                      <th>Stok</th>
+                      <th>Tanggal Masuk</th>
+                      <th>Harga Beli</th>
+                      <th>Harga Jual</th>
+                      <th>Tanggal Exp</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($barangs as $index => $barang)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $barang->id_barang }}</td>
+                            <td>{{ $barang->nama_barang }}</td>
+                            <td>{{ $barang->jenis_barang }}</td>
+                            <td>{{ $barang->stok }}</td>
+                            <td>{{ $barang->tanggal_masuk }}</td>
+                            <td>Rp {{ number_format($barang->harga_beli, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($barang->harga_jual, 0, ',', '.') }}</td>
+                            <td>{{ $barang->tanggal_exp }}</td>
+                            <td>
+                                {{-- <button onclick="openDetailPopup()" style="padding: 0px 20px;">Detail</button> --}}
+                                <a href="{{ route('produk.detail', ['id' => $barang->id_barang]) }}" style="padding: 0px 20px;">Detail</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                </table>
+
+                <div class="pagination">
+                  <button>&#9664;</button>
+                  <span>page 1 of 10</span>
+                  <button>&#9654;</button>
+                </div>
+              </div>
+
 
       </div>
     </div>
   </div>
+
+
+  <!-- Popup -->
+    <div class="popup-form" id="popupForm">
+        <div class="popup-content">
+        <h2>Produk baru</h2>
+       {{-- Upload Gambar --}}
+       <div class="image-upload">
+        <div class="image-box" id="imageBox">
+            <img id="imagePreview" src="#" alt="Preview" style="display: none;">
+            <span id="imageText">Drag image here<br>or<br><a href="#">Browse image</a></span>
+            <input type="file" name="gambar" id="gambarInput" style="display: none;">
+        </div>
+      </div>
+
+        <form action="{{ route('barangs.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <label>ID Barang</label>
+            <input type="text" placeholder="Enter product ID" name="id_barang" value="{{ old('id_barang') }}">
+
+            <label>Nama Barang</label>
+            <input type="text" placeholder="Enter product name" name="nama_barang" value="{{ old('nama_barang') }}">
+
+            <label>Jenis Barang</label>
+            <select name="jenis_barang">
+                <option value="">Select product category</option>
+                <option value="Minuman" {{ old('jenis_barang') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
+                <option value="Tekstil" {{ old('jenis_barang') == 'Tekstil' ? 'selected' : '' }}>Tekstil</option>
+                <!-- Tambah kategori lainnya -->
+            </select>
+
+            <label>Stok</label>
+            <input type="number" placeholder="Enter current stock" name="stok" value="{{ old('stok') }}">
+
+            <label>Tanggal Masuk</label>
+            <input type="date" name="tanggal_masuk" value="{{ old('tanggal_masuk') }}">
+
+            <label>Harga Beli</label>
+            <input type="number" placeholder="Enter buying price" name="harga_beli" step="0.01" value="{{ old('harga_beli') }}">
+
+            <label>Harga Jual</label>
+            <input type="number" placeholder="Enter selling price" name="harga_jual" step="0.01" value="{{ old('harga_jual') }}">
+
+            <label>Tanggal Kadaluarsa</label>
+            <input type="date" name="tanggal_exp" value="{{ old('tanggal_exp') }}">
+
+            <div class="popup-buttons">
+                <button type="button" class="btn btn-gray" onclick="window.history.back()">Discard</button>
+                <button type="submit" class="btn btn-yellow">Add Product</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+
+
+
+            <!-- Popup Detail Barang -->
+<div class="detail-popup" id="detailPopup">
+    <div class="detail-popup-content">
+      <!-- Bagian Header: Judul, Tab, Tombol Edit/Download -->
+      <div class="detail-header">
+        <div class="detail-header-left">
+          <h1 class="detail-product-name">YOGHURT</h1>
+          <ul class="detail-tabs">
+            <li class="active">Overview</li>
+            <li>Penjualan</li>
+            <li>Perubahan</li>
+            <li>Riwayat</li>
+          </ul>
+        </div>
+        <div class="detail-header-right">
+          <button class="detail-btn-edit">Edit</button>
+          <button class="detail-btn-download">Download</button>
+          <button class="detail-close-btn" onclick="closeDetailPopup()">×</button>
+        </div>
+      </div>
+
+      <!-- Bagian Body -->
+      <div class="detail-body">
+        <!-- Kolom Kiri -->
+        <div class="detail-left">
+          <!-- Detail Utama -->
+          <h3>Detail Utama</h3>
+          <div class="detail-row">
+            <span class="label">Nama Produk</span>
+            <span class="value">Yoghurt</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">ID Produk</span>
+            <span class="value">455667</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Kategori Produk</span>
+            <span class="value">Instant Food</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Tanggal Kadaluarsa</span>
+            <span class="value">13/4/23</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Satuan</span>
+            <span class="value">ml</span>
+          </div>
+
+          <!-- Detail Supplier -->
+          <h3>Detail Supplier</h3>
+          <div class="detail-row">
+            <span class="label">Nama Supplier</span>
+            <span class="value">Ronald Martin</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">No HP</span>
+            <span class="value">08789 98757</span>
+          </div>
+
+          <!-- Lokasi Stok -->
+          <h3>Lokasi Stok</h3>
+          <div class="detail-lokasi-stok">
+            <table>
+              <thead>
+                <tr>
+                  <th>Store Name</th>
+                  <th>Stok in hand</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sulur Branch</td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <td>Singarallur Branch</td>
+                  <td>19</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan -->
+        <div class="detail-right">
+          <!-- Gambar Produk -->
+          <div class="detail-product-image">
+            <img src="img/me.jpg" alt="Product Image">
+          </div>
+          <!-- Info Stok -->
+          <div class="detail-stock-info">
+            <div class="stock-row">
+              <span class="stock-label">Stok Awal</span>
+              <span class="stock-value">40</span>
+            </div>
+            <div class="stock-row">
+              <span class="stock-label">Stok Saat Ini</span>
+              <span class="stock-value">22</span>
+            </div>
+            <div class="stock-row">
+              <span class="stock-label">Dalam Pengiriman</span>
+              <span class="stock-value">12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 
   <script>
     const burgerBtn = document.getElementById('burger-btn');
@@ -373,5 +1035,68 @@
       sidebar.classList.toggle('closed');
     });
   </script>
+
+    <script>
+    function openPopup() {
+      document.getElementById("popupForm").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupForm").style.display = "none";
+    }
+  </script>
+
+    {{-- Script untuk memindahkan input file ke dalam form --}}
+    <script>
+        document.querySelector('.btn-yellow').addEventListener('click', function(e) {
+        const form = this.closest('form');
+        const fileInput = document.getElementById('gambarInput');
+
+        if (fileInput && !form.contains(fileInput)) {
+            form.appendChild(fileInput);
+        }
+        });
+    </script>
+
+<script>
+    const imageBox = document.getElementById('imageBox');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageText = document.getElementById('imageText');
+    const fileInput = document.getElementById('gambarInput');
+
+    // Klik box = buka file chooser
+    imageBox.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // Preview gambar setelah dipilih
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          imagePreview.setAttribute('src', e.target.result);
+          imagePreview.style.display = 'block';
+          imageText.style.display = 'none';
+        }
+
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
+    <script>
+        function openDetailPopup() {
+        document.getElementById('detailPopup').style.display = 'flex';
+        }
+
+        function closeDetailPopup() {
+        document.getElementById('detailPopup').style.display = 'none';
+        }
+    </script>
+
+
+
 </body>
 </html>
