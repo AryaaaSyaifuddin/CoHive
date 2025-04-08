@@ -11,13 +11,13 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'user';
+    protected $table = 'users';
 
     protected $fillable = [
-        'name',
-        'username',
         'email',
+        'username',
         'password',
+        'role'
     ];
 
     protected $hidden = [
@@ -28,5 +28,10 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne(Profile::class);
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
     }
 }

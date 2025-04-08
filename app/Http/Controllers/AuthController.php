@@ -29,19 +29,24 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|unique:user,email',
-            'username' => 'required|unique:user,username',
-            'password' => 'required|min:6',
-        ]);
+        try{
+            $request->validate([
+                'email' => 'required|email|unique:users,email',
+                'username' => 'required|unique:users,username',
+                'password' => 'required|min:6', // Tambah confirmed
+            ]);
+        
+            User::create([
+                'email' => $request->email,
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'role' => 'karyawan' // Set default role
+            ]);
 
-        User::create([
-            'name' => 'Unknown',
-            'email' => $request->email,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->back()->with('success', 'Registration successful! You can now log in.');
+            return redirect()->back()->with('success', 'Registration successful! You can now log in.');
+        }
+        catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Registration failed: '.$e->getMessage());
+        }
     }
 }

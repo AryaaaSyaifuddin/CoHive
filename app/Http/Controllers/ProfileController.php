@@ -12,8 +12,8 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
+        /** @var \App\Models\Users $user */
+        $users = Auth::user();
 
         // Validasi input dari form
         $validatedData = $request->validate([
@@ -26,8 +26,8 @@ class ProfileController extends Controller
         ]);
 
         // Update nama pada tabel users
-        $user->name = $validatedData['full_name'];
-        $user->save();
+        $users->username = $validatedData['full_name'];
+        $users->save();
 
         // Persiapkan data untuk profile
         $profileData = [
@@ -40,7 +40,7 @@ class ProfileController extends Controller
         // Jika ada file foto, simpan file dan set path-nya
         if ($request->hasFile('photo')) {
             // Hapus foto lama jika ada
-            $profile = Profile::firstOrNew(['user_id' => $user->id]);
+            $profile = Profile::firstOrNew(['user_id' => $users->id]);
             if ($profile->photo && Storage::disk('public')->exists($profile->photo)) {
                 Storage::disk('public')->delete($profile->photo);
             }
@@ -51,7 +51,7 @@ class ProfileController extends Controller
 
         // Update atau buat data profile
         Profile::updateOrCreate(
-            ['user_id' => $user->id],
+            ['user_id' => $users->id],
             $profileData
         );
 

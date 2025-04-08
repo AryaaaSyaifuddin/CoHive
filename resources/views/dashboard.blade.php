@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>CoHive</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="homepage.css" />
   <style>
+   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: poppins;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
     }
     .wrapper {
       display: flex;
@@ -202,6 +205,204 @@
     .tilt {
       transform: rotate(-57deg);
     }
+
+
+
+    /* ------CSS MAIN CONTENT------------ */
+    /* Container utama untuk konten dashboard */
+    .dashboard-content {
+        padding: 5%;
+      position: relative;
+      z-index: 2; /* agar di atas shape */
+    }
+
+    /* Judul "Dashboard" */
+    .dashboard-content h2 {
+      font-size: 30px;
+      color: #252641;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    /* Bagian info singkat: Kategori, Barang Masuk, Barang Keluar, Stok Rendah */
+    .info-cards {
+        padding : 2%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .info-card {
+      flex: 1;
+      min-width: 220px;
+      background: #FFFFFF;
+      border: 2px solid #A6A6A6;
+      border-radius: 10px;
+      padding: 15px;
+      position: relative;
+    }
+    .info-card h3 {
+      font-size: 20px;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #000;
+    }
+    .info-card p {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #000;
+    }
+    .info-card span {
+      font-size: 14px;
+      color: #858D9D;
+    }
+    /* Warna teks merah untuk Stok Rendah */
+    .info-card.red h3 {
+      color: #FF0000;
+    }
+    .info-columns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; /* Jarak antar kolom */
+    }
+
+    .info-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex: 1; /* Supaya kedua kolom memiliki lebar yang sama */
+    }
+
+    .num {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    }
+
+    .text {
+    font-size: 14px;
+    color: #858D9D;
+    }
+
+    /* Bagian Income & Outcome */
+    .finance-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .finance-card {
+      flex: 1;
+      min-width: 300px;
+      background: #FFFFFF;
+      border: 2px solid #A6A6A6;
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+    }
+    .finance-card h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .finance-card .amount {
+      font-size: 25px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    /* Bagian Analytics (Grafik) */
+    .analytics-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .analytics-left {
+      flex: 2;
+      min-width: 500px;
+      background: #FFFFFF;
+      border: 2px solid #A6A6A6;
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+    }
+    .analytics-left h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #2A2929;
+    }
+    /* Tempatkan chart di sini (manual atau library chart) */
+    .chart-placeholder {
+      width: 100%;
+      height: 250px;
+      background: #F9F9F9;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 16px;
+    }
+
+    /* Bagian Kalender & Jadwal */
+    .analytics-right {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .calendar-card,
+    .schedule-card {
+      background: #FFFFFF;
+      border: 2px solid #A6A6A6;
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+    }
+    .calendar-card h3,
+    .schedule-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .calendar {
+      width: 100%;
+      height: 200px;
+      background: #F9F9F9;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 16px;
+    }
+    .schedule {
+      width: 100%;
+      height: 150px;
+      background: #F9F9F9;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      color: #000;
+      padding: 10px;
+      gap: 5px;
+      font-size: 14px;
+    }
+    .schedule .time {
+      font-weight: 600;
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -297,6 +498,85 @@
       <div class="content">
         <div class="shape hex1 tilt"></div>
         <div class="shape hex3"></div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <h2>Dashboard</h2>
+
+            <!-- Info Cards -->
+            <div class="info-cards">
+              <div class="info-card">
+                <h3>Kategori</h3>
+                <p>12</p>
+                <span>Last 7 days</span>
+              </div>
+              <div class="info-card">
+                <h3>Total Barang Masuk</h3>
+                <p>22</p>
+                <span>Rp 120.000</span>
+              </div>
+              <div class="info-card">
+                <h3>Data Barang Keluar</h3>
+                <p>22</p>
+                <span>Rp 120.000</span>
+              </div>
+              <div class="info-card red">
+                <h3>Stok Rendah</h3>
+                <div class="info-columns">
+                  <div class="info-column">
+                    <p class="num">7</p>
+                    <span class="text">Dipesan</span>
+                  </div>
+                  <div class="info-column">
+                    <p class="num">8</p>
+                    <span class="text">stok tersedia<br>saat ini</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Finance (Income & Outcome) -->
+            <div class="finance-section">
+              <div class="finance-card">
+                <h4>Total Income</h4>
+                <div class="amount">$632.000</div>
+                <!-- Contoh persentase naik/turun -->
+                <small style="color: #02B15A; background: rgba(2, 177, 90, 0.15); padding: 4px 8px; border-radius: 8px;">+1.29%</small>
+              </div>
+              <div class="finance-card">
+                <h4>Total Outcome</h4>
+                <div class="amount">$632.000</div>
+                <small style="color: #EB001B; background: rgba(235, 0, 27, 0.15); padding: 4px 8px; border-radius: 8px;">-0.85%</small>
+              </div>
+            </div>
+
+            <!-- Analytics & Calendar/Schedule -->
+            <div class="analytics-section">
+              <!-- Bagian Kiri: Analytics/Chart -->
+              <div class="analytics-left">
+                <h3>Analytics</h3>
+                <div class="chart-placeholder">
+                  (Bar Chart Placeholder)
+                </div>
+              </div>
+              <!-- Bagian Kanan: Calendar & Schedule -->
+              <div class="analytics-right">
+                <div class="calendar-card">
+                  <h3>September 2023</h3>
+                  <div class="calendar">
+                    (Calendar Placeholder)
+                  </div>
+                </div>
+                <div class="schedule-card">
+                  <h3>Sep 12, Monday</h3>
+                  <div class="schedule">
+                    <div class="time">2 PM</div>
+                    <div>Adobe XD Live Class</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   </div>

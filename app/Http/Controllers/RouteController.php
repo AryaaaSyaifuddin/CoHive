@@ -13,11 +13,11 @@ class RouteController extends Controller
     }
 
     public function profile(){
-        $user = Auth::user();
+        $users = Auth::user();
         // Cari data profile, jika belum ada buat instance baru
-        $profile = $user->profile ?? new Profile(['user_id' => $user->id]);
+        $profile = $users->profile ?? new Profile(['user_id' => $users->id]);
 
-        return view('profile', compact('user', 'profile'));
+        return view('profile', compact('users', 'profile'));
     }
 
     public function anggota(){
