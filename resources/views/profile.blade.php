@@ -433,7 +433,7 @@
                   @csrf
                   <div class="form-group">
                     <label for="full_name">Full Name</label>
-                    <input type="text" id="full_name" name="full_name" placeholder="Thomas Edison" value="{{ old('full_name', $user->name) }}">
+                    <input type="text" id="full_name" name="full_name" placeholder="Thomas Edison" value="{{ old('full_name', $users->name) }}">
                   </div>
 
                   <div class="form-group">
@@ -459,7 +459,7 @@
                   <div class="form-group">
                     <label for="email">Email</label>
                     <!-- Email diambil dari user login dan tidak bisa diubah -->
-                    <input type="email" id="email" name="email" placeholder="thomas.edison@example.com" value="{{ $user->email }}" disabled>
+                    <input type="email" id="email" name="email" placeholder="thomas.edison@example.com" value="{{ $users->email }}" disabled>
                   </div>
 
                   <div class="form-group">
