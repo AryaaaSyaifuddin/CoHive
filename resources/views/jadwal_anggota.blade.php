@@ -574,10 +574,11 @@
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
       <div class="profile">
-        <img src="img/me.jpg" alt="Profile" />
+        <img src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil">
+        <!-- Tombol burger di dalam sidebar -->
         <button class="burger-btn" id="burger-btn"><i class="fa fa-bars"></i></button>
-        <h3>Thomas Edison</h3>
-        <p>Karyawan</p>
+        <h3>{{ $profile->name ?? 'Anonim' }}</h3>
+        <p>{{ $users->role ?? 'Anonim' }}</p>
         <div class="garis"></div>
       </div>
       <ul class="menu">
@@ -628,7 +629,9 @@
     <div class="main-container">
       <div class="header">
         <h1>CoHive</h1>
-        <button class="logout-btn"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <a href="{{ route('logout') }}" class="logout-btn" style="text-decoration: none">
+            <i class="fa fa-sign-out-alt"></i> Logout
+        </a>
         <div class="shape hex2"></div>
       </div>
       <div class="content">
@@ -775,7 +778,7 @@
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
     let selectedDate = new Date(currentDate);
-    
+
     burgerBtn.addEventListener('click', () => {
       sidebar.classList.toggle('closed');
     });
@@ -1010,7 +1013,7 @@ async function renderScheduleTable() {
         eventForm.reset();
       });
     });
-    
+
     // Submit form acara
     eventForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -1026,9 +1029,9 @@ async function renderScheduleTable() {
     alert('Waktu selesai harus setelah waktu mulai');
     return;
   }
-  
+
   const submitBtn = document.querySelector('.submit-btn');
-  
+
   try {
     submitBtn.disabled = true;
     submitBtn.innerHTML = 'Menyimpan...';
@@ -1058,7 +1061,7 @@ async function renderScheduleTable() {
       }
       throw new Error(errorMessage);
     }
-    
+
     alert('Acara berhasil disimpan!');
     modal.classList.remove('show');
     eventForm.reset();

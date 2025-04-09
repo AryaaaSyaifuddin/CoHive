@@ -9,33 +9,60 @@ use Illuminate\Support\Facades\Auth;
 
 class RouteController extends Controller
 {
-    public function dashboard(){
-        return view("dashboard");
+    public function dashboard(){$users = Auth::user();
+        // Cari data profile, jika belum ada buat instance baru
+        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+
+
+        return view('dashboard', compact('users', 'profile'));
     }
 
     public function profile(){
         $users = Auth::user();
         // Cari data profile, jika belum ada buat instance baru
-        $profile = $users->profile ?? new Profile(['user_id' => $users->id]);
+        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+
 
         return view('profile', compact('users', 'profile'));
     }
 
     public function anggota(){
-        return view("anggota");
+        $users = Auth::user();
+        // Cari data profile, jika belum ada buat instance baru
+        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+
+
+        return view('anggota', compact('users', 'profile'));
     }
 
-    public function stokBarang(){
+    public function stokBarang() {
+        $users = Auth::user();
+
+        // Cari data profile, jika belum ada, buat instance baru
+        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+
         $barangs = Barang::all();
-        return view("stok-barang", compact('barangs'));
+
+        return view("stok-barang", compact('barangs', 'users', 'profile'));
     }
+
 
     public function keuangan(){
-        return view("keuangan");
+        $users = Auth::user();
+        // Cari data profile, jika belum ada buat instance baru
+        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+
+
+        return view('keuangan', compact('users', 'profile'));
     }
 
     public function jadwal_anggota(){
-        return view("jadwal_anggota");
+        $users = Auth::user();
+        // Cari data profile, jika belum ada buat instance baru
+        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+
+
+        return view('jadwal_anggota', compact('users', 'profile'));
     }
 
     public function loginRegister(){

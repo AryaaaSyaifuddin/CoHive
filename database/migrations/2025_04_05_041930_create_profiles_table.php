@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->unsignedBigInteger('user_id')->unique(); // Satu profil untuk satu user
             $table->date('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
-            $table->string('photo')->nullable(); // path foto profil
+            $table->string('photo')->nullable(); 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

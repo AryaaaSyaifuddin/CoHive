@@ -421,7 +421,7 @@
 
     .image-box {
     width: 38%;
-    height: 180px;
+    height: 163px;
     border: 2px dashed #ccc;
     text-align: center;
     position: relative;
@@ -433,7 +433,6 @@
     }
 
     .image-box img {
-    max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     display: block;
@@ -692,11 +691,11 @@
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
       <div class="profile">
-        <img src="img/me.jpg" alt="Profile" />
+        <img src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil">
         <!-- Tombol burger di dalam sidebar -->
         <button class="burger-btn" id="burger-btn"><i class="fa fa-bars"></i></button>
-        <h3>Thomas Edison</h3>
-        <p>Karyawan</p>
+        <h3>{{ $profile->name ?? 'Anonim' }}</h3>
+        <p>{{ $users->role ?? 'Anonim' }}</p>
         <div class="garis"></div>
       </div>
       <ul class="menu">
@@ -747,7 +746,9 @@
     <div class="main-container">
       <div class="header">
         <h1>CoHive</h1>
-        <button class="logout-btn"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <a href="{{ route('logout') }}" class="logout-btn" style="text-decoration: none">
+            <i class="fa fa-sign-out-alt"></i> Logout
+        </a>
         <div class="shape hex2"></div>
       </div>
       <div class="content">
@@ -838,8 +839,19 @@
                             <td>Rp {{ number_format($barang->harga_jual, 0, ',', '.') }}</td>
                             <td>{{ $barang->tanggal_exp }}</td>
                             <td>
-                                {{-- <button onclick="openDetailPopup()" style="padding: 0px 20px;">Detail</button> --}}
-                                <a href="{{ route('produk.detail', ['id' => $barang->id_barang]) }}" style="padding: 0px 20px;">Detail</a>
+                                @foreach ($barangs as $barang)
+                                <button onclick="openDetailPopup(this)"
+                                  data-id="{{ $barang->id_barang }}"
+                                  data-nama="{{ $barang->nama_barang }}"
+                                  data-jenis="{{ $barang->jenis_barang }}"
+                                  data-exp="{{ $barang->tanggal_exp }}"
+                                  data-gambar="{{ asset('storage/' . $barang->gambar) }}"
+                                  data-stok="{{ $barang->stok }}"
+                                  data-harga-beli="{{ $barang->harga_beli }}"
+                                  data-harga-jual="{{ $barang->harga_jual }}">
+                                  Detail
+                                </button>
+                              @endforeach
                             </td>
                         </tr>
                     @endforeach
@@ -852,8 +864,6 @@
                   <button>&#9654;</button>
                 </div>
               </div>
-
-
       </div>
     </div>
   </div>
@@ -915,138 +925,124 @@
 
 
 
-            <!-- Popup Detail Barang -->
-<div class="detail-popup" id="detailPopup">
-    <div class="detail-popup-content">
-      <!-- Bagian Header: Judul, Tab, Tombol Edit/Download -->
-      <div class="detail-header">
-        <div class="detail-header-left">
-          <h1 class="detail-product-name">YOGHURT</h1>
-          <ul class="detail-tabs">
-            <li class="active">Overview</li>
-            <li>Penjualan</li>
-            <li>Perubahan</li>
-            <li>Riwayat</li>
-          </ul>
-        </div>
-        <div class="detail-header-right">
-          <button class="detail-btn-edit">Edit</button>
-          <button class="detail-btn-download">Download</button>
-          <button class="detail-close-btn" onclick="closeDetailPopup()">×</button>
-        </div>
-      </div>
-
-      <!-- Bagian Body -->
-      <div class="detail-body">
-        <!-- Kolom Kiri -->
-        <div class="detail-left">
-          <!-- Detail Utama -->
-          <h3>Detail Utama</h3>
-          <div class="detail-row">
-            <span class="label">Nama Produk</span>
-            <span class="value">Yoghurt</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">ID Produk</span>
-            <span class="value">455667</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">Kategori Produk</span>
-            <span class="value">Instant Food</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">Tanggal Kadaluarsa</span>
-            <span class="value">13/4/23</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">Satuan</span>
-            <span class="value">ml</span>
-          </div>
-
-          <!-- Detail Supplier -->
-          <h3>Detail Supplier</h3>
-          <div class="detail-row">
-            <span class="label">Nama Supplier</span>
-            <span class="value">Ronald Martin</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">No HP</span>
-            <span class="value">08789 98757</span>
-          </div>
-
-          <!-- Lokasi Stok -->
-          <h3>Lokasi Stok</h3>
-          <div class="detail-lokasi-stok">
-            <table>
-              <thead>
-                <tr>
-                  <th>Store Name</th>
-                  <th>Stok in hand</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Sulur Branch</td>
-                  <td>15</td>
-                </tr>
-                <tr>
-                  <td>Singarallur Branch</td>
-                  <td>19</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Kolom Kanan -->
-        <div class="detail-right">
-          <!-- Gambar Produk -->
-          <div class="detail-product-image">
-            <img src="img/me.jpg" alt="Product Image">
-          </div>
-          <!-- Info Stok -->
-          <div class="detail-stock-info">
-            <div class="stock-row">
-              <span class="stock-label">Stok Awal</span>
-              <span class="stock-value">40</span>
+    <div class="detail-popup" id="detailPopup" style="display: none;">
+        <div class="detail-popup-content">
+          <div class="detail-header">
+            <div class="detail-header-left">
+              <h1 class="detail-product-name" id="popupNamaProduk">YOGHURT</h1>
+              <ul class="detail-tabs">
+                <li class="active">Overview</li>
+                <li>Penjualan</li>
+                <li>Perubahan</li>
+                <li>Riwayat</li>
+              </ul>
             </div>
-            <div class="stock-row">
-              <span class="stock-label">Stok Saat Ini</span>
-              <span class="stock-value">22</span>
+            <div class="detail-header-right">
+              <button class="detail-btn-edit">Edit</button>
+              <button class="detail-btn-download">Download</button>
+              <button class="detail-close-btn" onclick="closeDetailPopup()">×</button>
             </div>
-            <div class="stock-row">
-              <span class="stock-label">Dalam Pengiriman</span>
-              <span class="stock-value">12</span>
+          </div>
+
+          <div class="detail-body">
+            <div class="detail-left">
+              <h3>Detail Utama</h3>
+              <div class="detail-row">
+                <span class="label">Nama Produk</span>
+                <span class="value" id="popupNamaProdukText">N/A</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">ID Produk</span>
+                <span class="value" id="popupIdProduk">N/A</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Kategori Produk</span>
+                <span class="value" id="popupKategori">N/A</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Tanggal Kadaluarsa</span>
+                <span class="value" id="popupExp">N/A</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Satuan</span>
+                <span class="value">N/A</span> <!-- tidak ada field satuan di database -->
+              </div>
+
+              <h3>Detail Supplier</h3>
+              <div class="detail-row">
+                <span class="label">Nama Supplier</span>
+                <span class="value">N/A</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">No HP</span>
+                <span class="value">N/A</span>
+              </div>
+
+              <h3>Lokasi Stok</h3>
+              <div class="detail-lokasi-stok">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Store Name</th>
+                      <th>Stok in hand</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Sulur Branch</td>
+                      <td>15</td>
+                    </tr>
+                    <tr>
+                      <td>Singarallur Branch</td>
+                      <td>19</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="detail-right">
+              <div class="detail-product-image">
+                <img src="" alt="Product Image" id="popupGambar" style="max-width: 100%;">
+              </div>
+              <div class="detail-stock-info">
+                <div class="stock-row">
+                  <span class="stock-label">Stok Awal</span>
+                  <span class="stock-value">N/A</span>
+                </div>
+                <div class="stock-row">
+                  <span class="stock-label">Stok Saat Ini</span>
+                  <span class="stock-value" id="popupStok">N/A</span>
+                </div>
+                <div class="stock-row">
+                  <span class="stock-label">Dalam Pengiriman</span>
+                  <span class="stock-value">N/A</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
-  </div>
-
-
-
-
-  <script>
-    const burgerBtn = document.getElementById('burger-btn');
-    const sidebar = document.getElementById('sidebar');
-
-    burgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('closed');
-    });
-  </script>
 
     <script>
-    function openPopup() {
-      document.getElementById("popupForm").style.display = "flex";
-    }
+        const burgerBtn = document.getElementById('burger-btn');
+        const sidebar = document.getElementById('sidebar');
 
-    function closePopup() {
-      document.getElementById("popupForm").style.display = "none";
-    }
-  </script>
+        burgerBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        });
+    </script>
 
-    {{-- Script untuk memindahkan input file ke dalam form --}}
+    <script>
+        function openPopup() {
+        document.getElementById("popupForm").style.display = "flex";
+        }
+
+        function closePopup() {
+        document.getElementById("popupForm").style.display = "none";
+        }
+    </script>
+
     <script>
         document.querySelector('.btn-yellow').addEventListener('click', function(e) {
         const form = this.closest('form');
@@ -1058,36 +1054,44 @@
         });
     </script>
 
-<script>
-    const imageBox = document.getElementById('imageBox');
-    const imagePreview = document.getElementById('imagePreview');
-    const imageText = document.getElementById('imageText');
-    const fileInput = document.getElementById('gambarInput');
+    <script>
+        const imageBox = document.getElementById('imageBox');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageText = document.getElementById('imageText');
+        const fileInput = document.getElementById('gambarInput');
 
-    // Klik box = buka file chooser
-    imageBox.addEventListener('click', () => {
-      fileInput.click();
-    });
+        // Klik box = buka file chooser
+        imageBox.addEventListener('click', () => {
+        fileInput.click();
+        });
 
-    // Preview gambar setelah dipilih
-    fileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
+        // Preview gambar setelah dipilih
+        fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
 
-        reader.onload = function (e) {
-          imagePreview.setAttribute('src', e.target.result);
-          imagePreview.style.display = 'block';
-          imageText.style.display = 'none';
+            reader.onload = function (e) {
+            imagePreview.setAttribute('src', e.target.result);
+            imagePreview.style.display = 'block';
+            imageText.style.display = 'none';
+            }
+
+            reader.readAsDataURL(file);
         }
-
-        reader.readAsDataURL(file);
-      }
-    });
-  </script>
+        });
+    </script>
 
     <script>
-        function openDetailPopup() {
+        function openDetailPopup(button) {
+        document.getElementById('popupNamaProduk').textContent = button.dataset.nama || 'N/A';
+        document.getElementById('popupNamaProdukText').textContent = button.dataset.nama || 'N/A';
+        document.getElementById('popupIdProduk').textContent = button.dataset.id || 'N/A';
+        document.getElementById('popupKategori').textContent = button.dataset.jenis || 'N/A';
+        document.getElementById('popupExp').textContent = button.dataset.exp || 'N/A';
+        document.getElementById('popupStok').textContent = button.dataset.stok || 'N/A';
+        document.getElementById('popupGambar').src = button.dataset.gambar || '';
+
         document.getElementById('detailPopup').style.display = 'flex';
         }
 
@@ -1096,6 +1100,24 @@
         }
     </script>
 
+
+    <script>
+        function openDetailPopup(button) {
+        document.getElementById('popupNamaProduk').textContent = button.dataset.nama || 'N/A';
+        document.getElementById('popupNamaProdukText').textContent = button.dataset.nama || 'N/A';
+        document.getElementById('popupIdProduk').textContent = button.dataset.id || 'N/A';
+        document.getElementById('popupKategori').textContent = button.dataset.jenis || 'N/A';
+        document.getElementById('popupExp').textContent = button.dataset.exp || 'N/A';
+        document.getElementById('popupStok').textContent = button.dataset.stok || 'N/A';
+        document.getElementById('popupGambar').src = button.dataset.gambar || '';
+
+        document.getElementById('detailPopup').style.display = 'flex';
+        }
+
+        function closeDetailPopup() {
+        document.getElementById('detailPopup').style.display = 'none';
+        }
+    </script>
 
 
 </body>

@@ -21,22 +21,24 @@ Route::middleware([LoginMiddleware::class])->group(function () {
 
     Route::get("/stok-barang", [RouteController::class, "stokBarang"]);
     Route::post('/barangs', [BarangController::class, 'store'])->name('barangs.store');
-    Route::get('/barang/detail/{id}', [BarangController::class, 'detail'])->name('produk.detail');
+    Route::get('/barangs/detail/{id}', [BarangController::class, 'detail'])->name('produk.detail');
 
     Route::get("/keuangan", [RouteController::class, "keuangan"]);
 
     // Jadwal anggota dapat ditampilkan oleh EventController (jika diperlukan)
-    Route::get("/jadwal_anggota", [EventController::class, 'index'])->name('jadwal');
+    Route::get("/jadwal_anggota", [RouteController::class, 'jadwal_anggota'])->name('jadwal');
+    Route::get('/events', [EventController::class, 'getEvents'])->middleware('auth');
+    Route::post('/events', [EventController::class, 'store'])->middleware('auth');
+
+
+
+
 
     Route::get('/logout', function () {
         Auth::logout();
         return redirect('/login')->with('success', 'Berhasil logout');
     })->name('logout');
 
-    // Route untuk event harus diakses oleh pengguna yang sudah login
-    // Di routes/web.php:
-    Route::get('/events', [EventController::class, 'getEvents'])->middleware('auth');
-    Route::post('/events', [EventController::class, 'store'])->middleware('auth');
 });
 
 // Route untuk guest (belum login)

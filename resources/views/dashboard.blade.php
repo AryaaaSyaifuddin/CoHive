@@ -435,11 +435,11 @@
   <div class="wrapper">
     <div class="sidebar" id="sidebar">
       <div class="profile">
-        <img src="img/me.jpg" alt="Profile" />
+        <img src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil">
         <!-- Tombol burger di dalam sidebar -->
         <button class="burger-btn" id="burger-btn"><i class="fa fa-bars"></i></button>
-        <h3>Thomas Edison</h3>
-        <p>Karyawan</p>
+        <h3>{{ $profile->name ?? 'Anonim' }}</h3>
+        <p>{{ $users->role ?? 'Anonim' }}</p>
         <div class="garis"></div>
       </div>
       <ul class="menu">

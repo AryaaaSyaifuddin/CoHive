@@ -352,11 +352,11 @@
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
       <div class="profile">
-        <img src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : 'https://via.placeholder.com/120' }}" alt="Foto Profil" style="border: 2px solid #FFD54F;">
+        <img src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil">
         <!-- Tombol burger di dalam sidebar -->
         <button class="burger-btn" id="burger-btn"><i class="fa fa-bars"></i></button>
-        <h3>Thomas Edison</h3>
-        <p>Karyawan</p>
+        <h3>{{ $profile->name ?? 'Anonim' }}</h3>
+        <p>{{ $users->role ?? 'Anonim' }}</p>
         <div class="garis"></div>
       </div>
       <ul class="menu">
@@ -410,12 +410,14 @@
       <!-- HEADER -->
       <div class="header">
         <h1>CoHive</h1>
-        <button class="logout-btn"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <a href="{{ route('logout') }}" class="logout-btn" style="text-decoration: none">
+            <i class="fa fa-sign-out-alt"></i> Logout
+        </a>
         <div class="shape hex2"></div>
       </div>
 
       <!-- CONTENT -->
-      <div class="content">
+    <div class="content">
         <!-- Shapes background -->
         <div class="shape hex1 tilt"></div>
         <div class="shape hex3"></div>
@@ -423,17 +425,26 @@
             <div class="profile-form-wrapper">
                 <h2>Profil</h2>
                 <div class="avatar-container">
-                  <!-- Tampilkan foto profil jika ada, jika tidak tampilkan placeholder -->
-                  <img src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : 'https://via.placeholder.com/120' }}" alt="Foto Profil">
-                  <div class="camera-icon" onclick="document.getElementById('photo').click()">
-                    <i class="fa fa-camera"></i>
-                  </div>
+                    <!-- Preview foto profil -->
+                    <img id="preview-image" src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil">
+
+                    <!-- Icon kamera untuk trigger upload -->
+                    <div class="camera-icon" onclick="document.getElementById('photo').click()">
+                      <i class="fa fa-camera"></i>
+                    </div>
                 </div>
+
+                <!-- Hanya satu input file yang digunakan -->
+
+
                 <form class="profile-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
-                  @csrf
+                    @csrf
+
+                  <input type="file" name="photo" id="photo" style="display: none;" accept="image/*" onchange="previewImage(event)">
+
                   <div class="form-group">
-                    <label for="full_name">Full Name</label>
-                    <input type="text" id="full_name" name="full_name" placeholder="Thomas Edison" value="{{ old('full_name', $users->name) }}">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Thomas Edison" value="{{ old('full_name', $profile->name) }}">
                   </div>
 
                   <div class="form-group">
@@ -467,9 +478,6 @@
                     <input type="text" id="address" name="address" placeholder="2118 Thornridge Cir, Syracuse, Connecticut 35624" value="{{ old('address', $profile->address ?? '') }}">
                   </div>
 
-                  <!-- Input file tersembunyi untuk upload foto profil -->
-                  <input type="file" name="photo" id="photo" style="display:none;" accept="image/*">
-
                   <div class="save-button">
                     <button type="submit">Simpan Perubahan</button>
                   </div>
@@ -487,5 +495,23 @@
       sidebar.classList.toggle('closed');
     });
   </script>
+
+
+<script>
+    function previewImage(event) {
+      const input = event.target;
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        const imgElement = document.getElementById('preview-image');
+        imgElement.src = reader.result;
+      };
+
+      if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
+
 </body>
 </html>

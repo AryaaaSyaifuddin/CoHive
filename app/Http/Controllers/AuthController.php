@@ -35,12 +35,12 @@ class AuthController extends Controller
                 'username' => 'required|unique:users,username',
                 'password' => 'required|min:6', // Tambah confirmed
             ]);
-        
+
             User::create([
                 'email' => $request->email,
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
-                'role' => 'karyawan' // Set default role
+                'role' => 'Karyawan' // Set default role
             ]);
 
             return redirect()->back()->with('success', 'Registration successful! You can now log in.');
