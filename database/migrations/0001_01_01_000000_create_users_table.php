@@ -15,7 +15,7 @@ public function up()
         $table->string('email')->unique();
         $table->timestamp('email_verified_at')->nullable();
         $table->string('password');
-        $table->enum('role', ['admin', 'karyawan'])->default('karyawan');
+        $table->enum('role', ['Admin', 'Karyawan'])->default('Karyawan');
         $table->rememberToken();
         $table->timestamps();
     });

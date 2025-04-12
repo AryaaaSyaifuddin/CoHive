@@ -427,7 +427,6 @@
                 <div class="avatar-container">
                     <!-- Preview foto profil -->
                     <img id="preview-image" src="{{ $profile && $profile->photo ? asset('storage/' . $profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil">
-
                     <!-- Icon kamera untuk trigger upload -->
                     <div class="camera-icon" onclick="document.getElementById('photo').click()">
                       <i class="fa fa-camera"></i>
@@ -444,7 +443,7 @@
 
                   <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Thomas Edison" value="{{ old('full_name', $profile->name) }}">
+                    <input type="text" id="name" name="name" placeholder="Anonim" value="{{ old('full_name', $profile->name) }}">
                   </div>
 
                   <div class="form-group">
