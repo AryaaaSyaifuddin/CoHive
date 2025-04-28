@@ -20,7 +20,7 @@
       transition: all 0.3s ease;
     }
     .sidebar {
-      width: 300px;
+      width: 280px;
       border: 1px solid;
       border-radius: 0 12px 12px 0;
       background: #fff;
@@ -78,7 +78,7 @@
       display: flex;
       align-items: center;
       text-decoration: none;
-      padding: 11px 18px;
+      padding: 9px 18px;
       border-radius: 10px;
       font-size: 13px;
       color: #000;
@@ -221,12 +221,14 @@
             <span class="menu-text">Dashboard</span>
           </a>
         </li>
-        <li>
-          <a href="/anggota">
-            <i class="fa fa-users"></i>
-            <span class="menu-text">Daftar Anggota</span>
-          </a>
-        </li>
+        @if($users->role === 'Admin')
+                <li>
+                    <a href="/anggota">
+                        <i class="fa fa-users"></i>
+                        <span class="menu-text">Daftar Anggota</span>
+                    </a>
+                </li>
+                @endif
         <li>
           <a href="/jadwal_anggota">
             <i class="fa fa-calendar-alt"></i>
@@ -249,12 +251,6 @@
           <a href="/profile">
             <i class="fa fa-user"></i>
             <span class="menu-text">Profile</span>
-          </a>
-        </li>
-        <li>
-          <a href="/pengaturan">
-            <i class="fa fa-cog"></i>
-            <span class="menu-text">Pengaturan</span>
           </a>
         </li>
       </ul>

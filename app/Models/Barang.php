@@ -15,7 +15,7 @@ class Barang extends Model
     protected $fillable = [
         'id_barang',
         'nama_barang',
-        'jenis_barang',
+        'varian',
         'stok',
         'tanggal_masuk',
         'harga_beli',
@@ -23,4 +23,17 @@ class Barang extends Model
         'tanggal_exp',
         'gambar',
     ];
+
+    // app/Models/Barang.php
+
+    public function barangMasuks()
+    {
+        return $this->hasMany(BarangMasuk::class);
+    }
+
+    public function barangKeluars()
+    {
+        return $this->hasMany(BarangKeluar::class);
+    }
+
 }

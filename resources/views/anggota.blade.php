@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CoHive</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     /* CSS Global & Template */
     * {
@@ -21,7 +22,7 @@
       transition: all 0.3s ease;
     }
     .sidebar {
-      width: 300px;
+      width: 280px;
       border: 1px solid #ccc;
       border-radius: 0 12px 12px 0;
       background: #fff;
@@ -77,7 +78,7 @@
       display: flex;
       align-items: center;
       text-decoration: none;
-      padding: 11px 18px;
+      padding: 9px 18px;
       border-radius: 10px;
       font-size: 13px;
       color: #000;
@@ -384,6 +385,33 @@
   </style>
 </head>
 <body>
+    {{-- Tampilkan pesan SweetAlert jika session error atau success --}}
+    @if (session('error'))
+    <script>
+      Swal.fire({
+        title: 'Error!',
+        text: '{{ session("error") }}',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    </script>
+    @endif
+
+    @if (session('success'))
+    <script>
+      Swal.fire({
+        title: 'Success!',
+        text: '{{ session("success") }}',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    </script>
+    @endif
+
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -401,12 +429,14 @@
             <span class="menu-text">Dashboard</span>
           </a>
         </li>
-        <li>
-          <a href="/anggota" class="dash">
-            <i class="fa fa-users"></i>
-            <span class="menu-text">Daftar Anggota</span>
-          </a>
-        </li>
+        @if($users->role === 'Admin')
+                <li>
+                    <a href="/anggota" class="dash">
+                        <i class="fa fa-users"></i>
+                        <span class="menu-text">Daftar Anggota</span>
+                    </a>
+                </li>
+                @endif
         <li>
           <a href="/jadwal_anggota">
             <i class="fa fa-calendar-alt"></i>
@@ -431,39 +461,36 @@
             <span class="menu-text">Profile</span>
           </a>
         </li>
-        <li>
-          <a href="/pengaturan">
-            <i class="fa fa-cog"></i>
-            <span class="menu-text">Pengaturan</span>
-          </a>
-        </li>
       </ul>
     </div>
 
     <!-- Main Container -->
-    <div class="main-container">
-      <div class="header">
-        <h1>CoHive</h1>
-        <a href="{{ route('logout') }}" class="logout-btn"><i class="fa fa-sign-out-alt"></i> Logout</a>
-        <div class="shape hex2"></div>
-      </div>
+<div class="main-container">
+    <div class="header">
+      <h1>CoHive</h1>
+      <a href="{{ route('logout') }}" class="logout-btn">
+        <i class="fa fa-sign-out-alt"></i> Logout
+      </a>
+      <div class="shape hex2"></div>
+    </div>
 
-      <!-- Konten Utama -->
-      <div class="content">
-        <div class="shape hex1 tilt"></div>
-        <div class="shape hex3"></div>
+    <!-- Konten Utama -->
+    <div class="content">
+      <div class="shape hex1 tilt"></div>
+      <div class="shape hex3"></div>
 
-        <!-- Grid Anggota -->
-        <div id="anggotaContainer">
-          <div class="anggota-container">
-            <div class="anggota-header">
-              <h2>Daftar Anggota</h2>
-              <button class="anggota-add-btn">Tambah Anggota <span>+</span></button>
-            </div>
-            <div class="anggota-card-grid">
-              @foreach ($userData as $userss)
+      <!-- Grid Anggota -->
+      <div id="anggotaContainer">
+        <div class="anggota-container">
+          <div class="anggota-header">
+            <h2>Daftar Anggota</h2>
+            <button class="anggota-add-btn">Tambah Anggota <span>+</span></button>
+          </div>
+          <div class="anggota-card-grid">
+            @foreach($userData as $userss)
               <div
                 class="anggota-card"
+                data-id="{{ $userss->id }}"
                 data-username="{{ $userss->username }}"
                 data-email="{{ $userss->email }}"
                 data-role="{{ $userss->role }}"
@@ -472,120 +499,217 @@
                 data-gender="{{ $userss->profile->gender ?? '-' }}"
                 data-phone="{{ $userss->profile->phone ?? '-' }}"
                 data-address="{{ $userss->profile->address ?? '-' }}"
-                data-photo="{{ $userss->profile && $userss->profile->photo ? asset('storage/' . $userss->profile->photo) : asset('img/ProfileKosong.jpg') }}"
+                data-photo="{{ $userss->profile && $userss->profile->photo
+                               ? asset('storage/' . $userss->profile->photo)
+                               : asset('img/ProfileKosong.jpg') }}"
               >
-                <img src="{{ $userss->profile && $userss->profile->photo ? asset('storage/' . $userss->profile->photo) : asset('img/ProfileKosong.jpg') }}" alt="Foto Profil" class="anggota-profile-img" />
+                <img
+                  src="{{ $userss->profile && $userss->profile->photo
+                          ? asset('storage/' . $userss->profile->photo)
+                          : asset('img/ProfileKosong.jpg') }}"
+                  alt="Foto Profil"
+                  class="anggota-profile-img"
+                />
                 <h3>{{ $userss->username }}</h3>
                 <p>{{ $userss->email }}</p>
                 <p>{{ $userss->profile->gender ?? '-' }}</p>
-                <p style="margin-bottom: 7px">{{ $userss->profile->phone ?? '-' }}</p>
-                <a href="#" class="anggota-profile-btn" onclick="showProfile(this)">Lihat Profil</a>
+                <p style="margin-bottom:7px">{{ $userss->profile->phone ?? '-' }}</p>
+                <a
+                  href="#"
+                  class="anggota-profile-btn"
+                  onclick="showProfile(event, this)"
+                >
+                  Lihat Profil
+                </a>
               </div>
-              @endforeach
-            </div>
+            @endforeach
           </div>
         </div>
-        <!-- /Grid Anggota -->
-
-        <!-- Detail Profil -->
-        <div id="profileContainer">
-          <a href="#" class="profile-back-btn" onclick="backToGrid()">
-            <i class="fa fa-arrow-left"></i> Kembali ke Daftar Anggota
-          </a>
-          <div class="profile-detail-content">
-            <!-- Kiri: Kartu Profil Besar -->
-            <div class="profile-detail-left">
-              <img id="profilePhoto" src="" alt="Foto Profil" />
-              <h3 id="profileUsername">Username</h3>
-              <p class="detail-role" id="profileRole">Role</p>
-              <p id="profileName">Nama: </p>
-              <p id="profileBirthDate">Birth Date: </p>
-            </div>
-            <!-- Kanan: Form Detail Data -->
-            <div class="profile-detail-right">
-              <form action="#" method="POST">
-                <label for="detailUsername">Username</label>
-                <input type="text" id="detailUsername" value="" readonly>
-
-                <label for="detailEmail">Email</label>
-                <input type="email" id="detailEmail" value="" readonly>
-
-                <label for="detailName">Name</label>
-                <input type="text" id="detailName" value="" readonly>
-
-                <label for="detailBirthDate">Tanggal Lahir</label>
-                <input type="date" id="detailBirthDate" value="" readonly>
-
-                <label for="detailGender">Jenis Kelamin</label>
-                <input type="text" id="detailGender" value="" readonly>
-
-                <label for="detailPhone">Telepon</label>
-                <input type="text" id="detailPhone" value="" readonly>
-
-                <label for="detailAddress">Alamat</label>
-                <input type="text" id="detailAddress" value="" readonly>
-
-                <button type="submit" class="update-btn">Perbarui Data</button>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- /Detail Profil -->
-
       </div>
-      <!-- End Content -->
+      <!-- /Grid Anggota -->
+
+      <!-- Detail Profil -->
+      <div id="profileContainer" style="display:none">
+        <a
+          href="#"
+          class="profile-back-btn"
+          onclick="backToGrid(event)"
+        >
+          <i class="fa fa-arrow-left"></i> Kembali ke Daftar Anggota
+        </a>
+
+        <div class="profile-detail-content">
+          <!-- Kiri: Kartu Profil Besar -->
+          <div class="profile-detail-left">
+            <div class="card profile-card">
+              <img
+                id="profilePhoto"
+                src="{{ asset('img/ProfileKosong.jpg') }}"
+                alt="Foto Profil"
+                class="profile-img"
+              />
+              <h3 id="profileUsername">Username</h3>
+              <p id="profileRole" class="detail-role">Role</p>
+              <p id="profileName">Nama: -</p>
+              <p id="profileBirthDate">Tanggal Lahir: -</p>
+            </div>
+          </div>
+
+          <!-- Kanan: Form Detail Data -->
+          <div class="profile-detail-right">
+            <form
+              id="updateProfileForm"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              @csrf
+              @method('PUT')
+
+              <!-- Username & Email (readonly) -->
+              <label for="detailUsername">Username</label>
+              <input
+                type="text"
+                id="detailUsername"
+                name="username"
+                readonly
+              />
+
+              <label for="detailEmail">Email</label>
+              <input
+                type="email"
+                id="detailEmail"
+                name="email"
+                readonly
+              />
+
+              <!-- Nama -->
+              <label for="detailName">Name</label>
+              <input
+                type="text"
+                id="detailName"
+                name="name"
+              />
+
+              <!-- Tanggal Lahir -->
+              <label for="detailBirthDate">Tanggal Lahir</label>
+              <input
+                type="date"
+                id="detailBirthDate"
+                name="birth_date"
+              />
+
+              <!-- Jenis Kelamin -->
+              <label for="detailGender">Jenis Kelamin</label>
+              <select
+                id="detailGender"
+                name="gender"
+                style="margin-bottom:15px; padding:10px; border-radius:8px; border:1px solid #ccc;"
+              >
+                <option value="male">Laki-laki</option>
+                <option value="female">Perempuan</option>
+              </select>
+
+              <!-- Telepon -->
+              <label for="detailPhone">Telepon</label>
+              <input
+                type="text"
+                id="detailPhone"
+                name="phone"
+              />
+
+              <!-- Alamat -->
+              <label for="detailAddress">Alamat</label>
+              <input
+                type="text"
+                id="detailAddress"
+                name="address"
+              />
+
+              <!-- Role -->
+              <label for="detailRole">Role</label>
+              <select
+                id="detailRole"
+                name="role"
+                style="margin-bottom:15px; padding:10px; border-radius:8px; border:1px solid #ccc;"
+              >
+                <option value="Admin">Admin</option>
+                <option value="Karyawan">Karyawan</option>
+              </select>
+
+              <!-- Foto Profil -->
+              <label for="photo">Foto Profil</label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+              />
+
+              <button type="submit" class="update-btn">
+                Perbarui Data
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- /Detail Profil -->
     </div>
+    <!-- End Content -->
+  </div>
   </div>
 
   <script>
-    // Toggle Sidebar
-    const burgerBtn = document.getElementById('burger-btn');
-    const sidebar = document.getElementById('sidebar');
-    burgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('closed');
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('profileContainer').style.display = 'none';
     });
 
-    // Tampilkan Detail Profil dari Card
-    function showProfile(btn) {
+    function showProfile(evt, btn) {
+      evt.preventDefault();
       const card = btn.closest('.anggota-card');
       if (!card) return;
 
-      // Ambil data dari atribut
-      const username = card.getAttribute('data-username');
-      const email    = card.getAttribute('data-email');
-      const role     = card.getAttribute('data-role');
-      const name     = card.getAttribute('data-name');
-      const birth    = card.getAttribute('data-birthdate');
-      const gender   = card.getAttribute('data-gender');
-      const phone    = card.getAttribute('data-phone');
-      const address  = card.getAttribute('data-address');
-      const photo    = card.getAttribute('data-photo');
+      // ambil data dari atribut
+      const id        = card.dataset.id;
+      const username  = card.dataset.username;
+      const email     = card.dataset.email;
+      const role      = card.dataset.role;
+      const name      = card.dataset.name;
+      const birth     = card.dataset.birthdate;
+      const gender    = card.dataset.gender;
+      const phone     = card.dataset.phone;
+      const address   = card.dataset.address;
+      const photo     = card.dataset.photo;
 
-      // Update kartu profil (kiri)
-      document.getElementById('profilePhoto').src = photo;
+      // update kiri
+      document.getElementById('profilePhoto').src            = photo;
       document.getElementById('profileUsername').textContent = username;
-      document.getElementById('profileRole').textContent = role;
-      document.getElementById('profileName').textContent = "Nama: " + name;
-      document.getElementById('profileBirthDate').textContent = "Birth Date: " + birth;
+      document.getElementById('profileRole').textContent     = role;
+      document.getElementById('profileName').textContent     = 'Nama: ' + name;
+      document.getElementById('profileBirthDate').textContent= 'Tanggal Lahir: ' + birth;
 
-      // Update form detail (kanan)
-      document.getElementById('detailUsername').value = username;
-      document.getElementById('detailEmail').value    = email;
-      document.getElementById('detailName').value       = name;
-      document.getElementById('detailBirthDate').value  = birth;
-      document.getElementById('detailGender').value     = gender;
-      document.getElementById('detailPhone').value      = phone;
-      document.getElementById('detailAddress').value    = address;
+      // update form action & isi field
+      const form = document.getElementById('updateProfileForm');
+      form.action = `/anggota/${id}`;
 
-      // Tampilkan detail dan sembunyikan grid
+      document.getElementById('detailUsername').value    = username;
+      document.getElementById('detailEmail').value       = email;
+      document.getElementById('detailName').value        = name;
+      document.getElementById('detailBirthDate').value   = birth;
+      document.getElementById('detailGender').value      = gender;
+      document.getElementById('detailPhone').value       = phone;
+      document.getElementById('detailAddress').value     = address;
+      document.getElementById('detailRole').value        = role;
+
+      // toggle visibility
       document.getElementById('anggotaContainer').style.display = 'none';
       document.getElementById('profileContainer').style.display = 'block';
     }
 
-    function backToGrid() {
-      document.getElementById('profileContainer').style.display = 'none';
+    function backToGrid(evt) {
+      evt.preventDefault();
+      document.getElementById('profileContainer').style.display  = 'none';
       document.getElementById('anggotaContainer').style.display = 'block';
     }
   </script>
+
 </body>
 </html>
