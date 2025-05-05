@@ -517,7 +517,7 @@
         text-align: center;
         font-weight: bold;
         margin: 0;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         }
         .print-receipt .title {
         text-align: center;
@@ -549,7 +549,7 @@
         .print-receipt ul li {
         display: flex;
         justify-content: space-between;  /* langsung kiri & kanan */
-        margin: 2px 0;
+        margin: 3px 0;
         font-size: 0.75rem;
         }
         .print-receipt ul li .label {
@@ -564,7 +564,7 @@
         text-align: center;
         font-size: 0.65rem;
         color: #777;
-        margin-top: 6px;
+        margin-top: 4px;
         }
 
 
