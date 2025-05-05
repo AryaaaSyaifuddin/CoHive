@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\keuanganAccount;
+use App\Models\KeuanganCategory;
+use App\Models\KeuanganTransaction;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -124,6 +127,8 @@ class RouteController extends Controller
 
         $totalStokDipesan = Barang::where('stok', '<', 5)->count();
         $stokTersedia = Barang::sum('stok');
+        $accounts = KeuanganAccount::all();
+
 
         return view("stok-barang", compact(
             'barangs',
@@ -137,18 +142,22 @@ class RouteController extends Controller
             'totalBarangKeluar',
             'nilaiTotalKeluar',
             'totalStokDipesan',
-            'stokTersedia'
+            'stokTersedia',
+            'accounts'
         ));
     }
 
 
     public function keuangan(){
-        $users = Auth::user();
-        // Cari data profile, jika belum ada buat instance baru
-        $profile = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+        $users      = Auth::user();
+        $profile    = $users->profile ?? (new Profile)->fill(['user_id' => $users->id]);
+        $accounts   = KeuanganAccount::all();
+        $categories = KeuanganCategory::all();
+        $transactions = KeuanganTransaction::with(['category','account','user'])
+                   ->orderBy('transaction_date','desc')
+                   ->get();
 
-
-        return view('keuangan', compact('users', 'profile'));
+        return view('keuangan', compact('users', 'profile', 'accounts', 'categories', 'transactions'));
     }
 
     public function jadwal_anggota(){

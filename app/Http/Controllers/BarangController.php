@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\BarangKeluar;
 use App\Models\BarangMasuk;
+use App\Models\KeuanganCategory;
+use App\Models\KeuanganTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +26,7 @@ class BarangController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+
         $gambarPath = null;
         if ($request->hasFile('gambar')) {
             $gambarPath = $request->file('gambar')->store('gambar_produk', 'public');
@@ -42,6 +45,7 @@ class BarangController extends Controller
             'gambar' => $gambarPath,
             'tanggal' => $request->tanggal_masuk, // ini opsional, kalau memang ada field tanggal di tabel barangs
         ]);
+
 
         // Simpan ke tabel barang_masuks
         BarangMasuk::create([
@@ -65,12 +69,12 @@ class BarangController extends Controller
     public function keluar(Request $request)
     {
         $request->validate([
-            'id_barang' => 'required|exists:barangs,id_barang',
-            'tanggal_exp' => 'required|date',
-            'jumlah_keluar' => 'required|integer|min:1',
+            'id_barang'      => 'required|exists:barangs,id_barang',
+            'tanggal_exp'    => 'required|date',
+            'jumlah_keluar'  => 'required|integer|min:1',
+            'account_id'     => 'required|exists:keuangan_accounts,id',
         ]);
 
-        // Cari barang berdasarkan kombinasi id_barang dan tanggal_exp
         $barang = Barang::where('id_barang', $request->id_barang)
                         ->where('tanggal_exp', $request->tanggal_exp)
                         ->first();
@@ -78,25 +82,46 @@ class BarangController extends Controller
         if (!$barang) {
             return back()->with('error', 'Barang tidak ditemukan dengan tanggal kadaluarsa tersebut.');
         }
-
         if ($barang->stok < $request->jumlah_keluar) {
             return back()->with('error', 'Stok tidak mencukupi.');
         }
 
-        // Kurangi stok
         $barang->stok -= $request->jumlah_keluar;
         $barang->save();
 
-        // Simpan ke tabel barang_keluars
-        BarangKeluar::create([
-            'barang_id' => $barang->id,
-            'user_id' => Auth::id(),
-            'jumlah' => $request->jumlah_keluar,
-            'tanggal' => now()->toDateString(),
+        $keluar = BarangKeluar::create([
+            'barang_id'   => $barang->id,
+            'user_id'     => Auth::id(),
+            'jumlah'      => $request->jumlah_keluar,
+            'tanggal'     => now()->toDateString(),
         ]);
 
-        return back()->with('success', 'Barang berhasil dikeluarkan dan dicatat di riwayat!');
+        $total = $request->jumlah_keluar * $barang->harga_jual;
+        $category = KeuanganCategory::firstOrCreate(
+            ['user_id' => Auth::id(), 'name' => 'Penjualan'],
+            ['type'    => 'income']
+        );
+
+        KeuanganTransaction::create([
+            'user_id'          => Auth::id(),
+            'account_id'       => $request->account_id,
+            'category_id'      => $category->id,
+            'amount'           => $total,
+            'transaction_date' => now()->toDateString(),
+            'description'      => 'Penjualan ' . $request->jumlah_keluar
+                                 . ' × ' . number_format($barang->harga_jual,0,',','.')
+                                 . ' (ID '.$barang->id_barang.')',
+        ]);
+
+        $account = \App\Models\KeuanganAccount::find($request->account_id);
+        if ($account) {
+            $account->balance += $total;
+            $account->save();
+        }
+
+        return back()->with('success', 'Barang dikeluarkan dan transaksi keuangan tercatat!');
     }
+
 
 
     public function update(Request $request, $id)

@@ -11,8 +11,9 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: poppins;
+      font-family: Poppins, sans-serif;
     }
+    body { background: #f3f4f6; color: #374151; }
     .wrapper {
       display: flex;
       min-height: 100vh;
@@ -22,90 +23,94 @@
     }
     .sidebar {
       width: 280px;
-      border: 1px solid;
+      border: 1px solid #ddd;
       border-radius: 0 12px 12px 0;
       background: #fff;
       padding: 20px;
       transition: width 0.3s ease;
       position: relative;
     }
-    /* Saat sidebar ditutup: mengecilkan lebar */
-    .sidebar.closed {
-      width: 80px;
-    }
-    .profile {
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
-    }
+    .sidebar.closed { width: 80px; }
+    .profile { text-align: center; margin-bottom: 20px; position: relative; }
     .profile img {
-      width: 80px;
-      height: 80px;
+      width: 80px; height: 80px;
       border-radius: 50%;
       object-fit: cover;
-    }
-    .profile h3 {
-      margin-top: 10px;
-      font-size: 18px;
       transition: opacity 0.3s ease;
     }
-    .profile p {
-      font-size: 14px;
-      color: #666;
-      transition: opacity 0.3s ease;
+    .profile h3, .profile p, .garis {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    /* Sembunyikan teks profil saat sidebar ditutup */
-    .sidebar.closed .profile h3,
+    .profile h3 { margin-top: 10px; font-size: 18px; }
+    .profile p { font-size: 14px; color: #666; }
     .sidebar.closed .profile img,
+    .sidebar.closed .profile h3,
     .sidebar.closed .profile p,
     .sidebar.closed .garis {
-      opacity: 0;
-      visibility: hidden;
+      opacity: 0; visibility: hidden;
     }
     .garis {
-      width: 100%;
-      height: 1px;
-      background-color: black;
-      margin: 25px 0 35px 0;
+      width: 100%; height: 1px;
+      background-color: #ddd;
+      margin: 25px 0 35px;
     }
-    .menu {
-      list-style: none;
-      padding-left: 0;
-    }
-    .menu li {
-      margin-bottom: 10px;
-    }
+    .menu { list-style: none; padding-left: 0; }
+    .menu li { margin-bottom: 10px; }
     .menu a {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       text-decoration: none;
       padding: 9px 18px;
       border-radius: 10px;
-      font-size: 13px;
-      color: #000;
-      background: #FFD54F;
-      font-weight: bold;
-      transition: background 0.3s ease, color 0.3s ease;
+      font-size: 13px; color: #000;
+      background: #FFD54F; font-weight: bold;
+      transition: background 0.3s, color 0.3s;
     }
-    .menu a i {
-      margin-right: 10px;
-    }
-    .menu a:hover {
-      background: #333;
-      color: whitesmoke;
-    }
-    .menu .dash {
-      background: #333;
-      color: #fff;
-    }
-    /* Sembunyikan teks menu saat sidebar ditutup */
-    .sidebar.closed .menu a{
-        padding: 12px 12px;
-    }
+    .menu a i { margin-right: 10px; }
+    .menu a:hover { background: #333; color: #fff; }
+    .menu .dash { background: #333; color: #fff; }
+    .sidebar.closed .menu a { padding: 12px; }
+    .sidebar.closed .menu-text { display: none; }
 
-    .sidebar.closed .menu-text {
-      display: none;
+    .main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: relative;
     }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .header h1 { font-size: 24px; color: #FFD54F; }
+    .logout-btn {
+      background: transparent;
+      border: 0;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+    }
+    .burger-btn {
+      position: absolute;
+      top: 5px; right: 5px;
+      background: transparent; border: 0;
+      padding: 8px 16px; border-radius: 20px;
+      font-weight: bold; cursor: pointer;
+      font-size: 16px; color: #000;
+      z-index: 2;
+    }
+    .sidebar.closed .burger-btn { padding: 8px; }
 
     .main-container {
       flex: 1;
@@ -119,7 +124,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid;
+      border: 1px solid #ddd;
       border-radius: 12px;
       padding: 20px;
       overflow: hidden;
@@ -161,7 +166,7 @@
     .content {
       position: relative;
       flex: 1;
-      border: 1px solid;
+      border: 1px solid #ddd;
       border-radius: 12px;
       background-color: #fff;
       overflow: hidden;
@@ -783,8 +788,8 @@
         </div>
 
         <div class="content">
-          <div class="shape hex1 tilt"></div>
-          <div class="shape hex3"></div>
+          {{-- <div class="shape hex1 tilt"></div>
+          <div class="shape hex3"></div> --}}
 
             <!-- Konten Aktifitas -->
 
@@ -842,7 +847,7 @@
           <!-- Tampilan Produk -->
           <div id="produk-content">
             <div class="dashboard-wrapper">
-                <h2 style="font-size: 19px; margin-bottom: 15px;">Stock Barang</h2>
+                <h2 style="font-size: 25px; margin-bottom: 15px;">Stock Barang</h2>
                 <div class="dashboard-box">
                   <div class="section">
                     <h4>Kategori Barang</h4>
@@ -1002,70 +1007,81 @@
     <!-- Popup Form Produk Baru -->
     <div class="popup-form" id="popupForm">
         <div class="popup-content">
-          <h2>Produk baru</h2>
+        <h2>Produk baru</h2>
 
-          {{-- Area Upload Gambar --}}
-          <div class="image-upload">
+        <!-- Area Upload Gambar -->
+        <div class="image-upload">
             <div class="image-box" id="imageBox">
-              <img id="imagePreview" src="#" alt="Preview" style="display: none;">
-              <span id="imageText">Drag image here<br>or<br><a href="#">Browse image</a></span>
-              <input type="file" name="gambar" id="gambarInput" style="display: none;">
+            <img id="imagePreview" src="#" alt="Preview" style="display: none;">
+            <span id="imageText">Drag image here<br>or<br><a href="#">Browse image</a></span>
+            <input type="file" name="gambar" id="gambarInput" style="display: none;">
             </div>
-          </div>
+        </div>
 
-          <form action="{{ route('barangs.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('barangs.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            {{-- Pilihan Produk: Select ID Barang --}}
+            <!-- Pilihan Produk: Select ID Barang -->
             <label for="selectExistingIdBarang">Pilih ID Barang (Opsional)</label>
-            <select id="selectExistingIdBarang" placeholder="Enter product ID">
-                @if(auth()->user()->role === 'Admin')
-                  <option value="new">Tambah Lainnya</option>
-                @endif
-                @foreach ($existingProducts as $product)
-                  <option value="{{ $product->id_barang }}"
-                          data-nama="{{ $product->nama_barang }}"
-                          data-varian="{{ $product->varian }}">
-                    {{ $product->id_barang }}
-                  </option>
-                @endforeach
+            <select name="select_mode" id="selectExistingIdBarang">
+            @if(auth()->user()->role === 'Admin')
+                <option value="new">Tambah Lainnya</option>
+            @endif
+            @foreach ($existingProducts as $product)
+                <option value="{{ $product->id_barang }}"
+                        data-nama="{{ $product->nama_barang }}"
+                        data-varian="{{ $product->varian }}">
+                {{ $product->id_barang }} — {{ $product->nama_barang }} ({{ $product->varian }})
+                </option>
+            @endforeach
             </select>
 
-            {{-- Input ID Barang (bisa diisi sendiri atau auto-filled) --}}
+            <!-- Input ID Barang (bisa auto-filled atau manual) -->
             <label for="idBarangInput">ID Barang</label>
             <input type="text"
-                   id="idBarangInput"
-                   name="id_barang"
-                   placeholder="Enter product ID"
-                   value="{{ old('id_barang') }}"
-                   required>
+                id="idBarangInput"
+                name="id_barang"
+                placeholder="Enter product ID"
+                value="{{ old('id_barang') }}"
+                required>
 
             <label for="namaBarangInput">Nama Barang</label>
-            <input type="text" placeholder="Enter product name" name="nama_barang" id="namaBarangInput" value="{{ old('nama_barang') }}" required>
+            <input type="text"
+                id="namaBarangInput"
+                name="nama_barang"
+                placeholder="Enter product name"
+                value="{{ old('nama_barang') }}"
+                required>
 
             <label for="varianInput">Varian</label>
-            <input type="text" placeholder="Enter product variant" name="varian" id="varianInput" value="{{ old('varian') }}" required>
+            <input type="text"
+                id="varianInput"
+                name="varian"
+                placeholder="Enter product variant"
+                value="{{ old('varian') }}"
+                required>
 
+            <!-- field lainnya seperti stok, tanggal, harga, dll. -->
             <label for="stokInput">Stok</label>
-            <input type="number" placeholder="Enter current stock" name="stok" id="stokInput" value="{{ old('stok') }}" required>
+            <input type="number" name="stok" id="stokInput" value="{{ old('stok') }}" required>
 
             <label for="tanggalMasukInput">Tanggal Masuk</label>
             <input type="date" name="tanggal_masuk" id="tanggalMasukInput" value="{{ old('tanggal_masuk') }}" required>
 
             <label for="hargaBeliInput">Harga Beli</label>
-            <input type="number" placeholder="Enter buying price" name="harga_beli" step="0.01" id="hargaBeliInput" value="{{ old('harga_beli') }}" required>
+            <input type="number" name="harga_beli" step="0.01" id="hargaBeliInput" value="{{ old('harga_beli') }}" required>
 
             <label for="hargaJualInput">Harga Jual</label>
-            <input type="number" placeholder="Enter selling price" name="harga_jual" step="0.01" id="hargaJualInput" value="{{ old('harga_jual') }}" required>
+            <input type="number" name="harga_jual" step="0.01" id="hargaJualInput" value="{{ old('harga_jual') }}" required>
 
             <label for="tanggalExpInput">Tanggal Kadaluarsa</label>
             <input type="date" name="tanggal_exp" id="tanggalExpInput" value="{{ old('tanggal_exp') }}">
 
             <div class="popup-buttons">
-              <button type="button" class="btn btn-gray" onclick="window.history.back()">Discard</button>
-              <button type="submit" class="btn btn-yellow">Add Product</button>
+            <button type="button" class="btn btn-gray" onclick="closePopup()">Discard</button>
+            <button type="submit" class="btn btn-yellow">Add Product</button>
             </div>
-          </form>
+        </form>
         </div>
     </div>
 
@@ -1201,12 +1217,22 @@
             <div style="flex: 1;">
               <form action="{{ route('barang.keluar') }}" method="POST">
                 @csrf
-                <!-- Hidden fields untuk menampung data ID Barang yang final, plus Tanggal Exp jika Anda mau kirim ke server -->
                 <input type="hidden" name="id_barang" id="formIdBarang">
                 <input type="hidden" name="tanggal_exp" id="formExpDate">
 
                 <label>Jumlah Keluar</label>
                 <input type="number" name="jumlah_keluar" placeholder="Masukkan jumlah" required>
+
+                <label for="account_id">Pilih Rekening Tujuan</label>
+                <select name="account_id" id="account_id" required>
+                <option value="" disabled selected>-- Pilih Rekening --</option>
+                @foreach($accounts as $acct)
+                    <option value="{{ $acct->id }}">
+                    {{ $acct->name }}
+                    </option>
+                @endforeach
+                </select>
+
 
                 <div class="popup-buttons" style="margin-top: 20px;">
                   <button type="button" class="btn btn-gray" onclick="closeBarangKeluarPopup()">Batal</button>
@@ -1366,49 +1392,57 @@
     </script>
 
 
+
     <script>
         const selectExistingIdBarang = document.getElementById('selectExistingIdBarang');
-        const idBarangInput = document.getElementById('idBarangInput');
-        const namaBarangInput = document.getElementById('namaBarangInput');
-        const varianInput = document.getElementById('varianInput');
+        const idBarangInput       = document.getElementById('idBarangInput');
+        const namaBarangInput     = document.getElementById('namaBarangInput');
+        const varianInput         = document.getElementById('varianInput');
 
-        function toggleInputs(disabled) {
-            idBarangInput.disabled = disabled;
-            namaBarangInput.disabled = disabled;
-            varianInput.disabled = disabled;
+        /**
+         * @param {boolean} isReadOnly
+         *   true  → field jadi readonly (tidak bisa edit, tapi value tetap dikirim)
+         *   false → field bisa diisi manual
+         */
+        function toggleInputs(isReadOnly) {
+        idBarangInput.readOnly   = isReadOnly;
+        namaBarangInput.readOnly = isReadOnly;
+        varianInput.readOnly     = isReadOnly;
         }
 
         function resetInputs() {
-            idBarangInput.value = '';
-            namaBarangInput.value = '';
-            varianInput.value = '';
+        idBarangInput.value   = '';
+        namaBarangInput.value = '';
+        varianInput.value     = '';
         }
 
         selectExistingIdBarang.addEventListener('change', function() {
-            if (this.value === 'new') {
-                resetInputs();
-                toggleInputs(false); // Enable inputs
-            } else {
-                const selectedOption = this.options[this.selectedIndex];
-                idBarangInput.value = this.value;
-                namaBarangInput.value = selectedOption.dataset.nama;
-                varianInput.value = selectedOption.dataset.varian;
-                toggleInputs(true); // Disable inputs
-            }
+        if (this.value === 'new') {
+            // Mode “Tambah Baru”
+            resetInputs();
+            toggleInputs(false);
+        } else {
+            // Mode “Pilih Produk Lama”
+            const opt = this.options[this.selectedIndex];
+            idBarangInput.value   = this.value;
+            namaBarangInput.value = opt.dataset.nama;
+            varianInput.value     = opt.dataset.varian;
+            toggleInputs(true);
+        }
         });
 
-        window.addEventListener('load', function() {
-            // Cek apakah opsi "new" ada
-            const hasNewOption = Array.from(selectExistingIdBarang.options).some(
-                option => option.value === 'new'
-            );
-
-            if (hasNewOption) {
-                selectExistingIdBarang.value = 'new';
-                toggleInputs(false);
-            } else {
-                selectExistingIdBarang.dispatchEvent(new Event('change'));
-            }
+        // Inisialisasi saat halaman load
+        window.addEventListener('DOMContentLoaded', function() {
+        // Cek apakah opsi "new" ada
+        const hasNew = Array.from(selectExistingIdBarang.options)
+                            .some(opt => opt.value === 'new');
+        if (hasNew) {
+            selectExistingIdBarang.value = 'new';
+            toggleInputs(false);
+        } else {
+            // Jika tidak ada “new”, paksa trigger change untuk autofill
+            selectExistingIdBarang.dispatchEvent(new Event('change'));
+        }
         });
     </script>
 

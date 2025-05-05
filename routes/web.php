@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\KeuanganAccountController;
+use App\Http\Controllers\KeuanganTransactionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RouteController;
@@ -32,6 +34,10 @@ Route::middleware([LoginMiddleware::class])->group(function () {
 
 
     Route::get("/keuangan", [RouteController::class, "keuangan"]);
+    Route::post('/keuangan-accounts', [KeuanganAccountController::class, 'store'])->name('keuangan-accounts.store');
+    Route::resource('keuangan-accounts', KeuanganAccountController::class)->only(['store','edit','update','destroy'])->middleware('auth');
+    Route::put('keuangan-accounts/{keuanganAccount}', [KeuanganAccountController::class,'update'])->name('keuangan-accounts.update')->middleware('auth');
+    Route::post('/keuangan/transactions',[KeuanganTransactionController::class, 'store'])->name('keuangan.transactions.store');
 
 
     // Jadwal anggota dapat ditampilkan oleh EventController (jika diperlukan)

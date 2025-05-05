@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    /* CSS Global & Template */
+    /* === GLOBAL RESET & LAYOUT === */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: poppins, sans-serif;
+      font-family: Poppins, sans-serif;
     }
+    body { background: #f3f4f6; color: #374151; }
     .wrapper {
       display: flex;
       min-height: 100vh;
@@ -23,86 +24,95 @@
     }
     .sidebar {
       width: 280px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 0 12px 12px 0;
       background: #fff;
       padding: 20px;
       transition: width 0.3s ease;
       position: relative;
     }
-    .sidebar.closed {
-      width: 80px;
-    }
-    .profile {
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
-    }
+    .sidebar.closed { width: 80px; }
+    .profile { text-align: center; margin-bottom: 20px; position: relative; }
     .profile img {
-      width: 80px;
-      height: 80px;
+      width: 80px; height: 80px;
       border-radius: 50%;
       object-fit: cover;
-    }
-    .profile h3 {
-      margin-top: 10px;
-      font-size: 18px;
       transition: opacity 0.3s ease;
     }
-    .profile p {
-      font-size: 14px;
-      color: #666;
-      transition: opacity 0.3s ease;
+    .profile h3, .profile p, .garis {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .sidebar.closed .profile h3,
+    .profile h3 { margin-top: 10px; font-size: 18px; }
+    .profile p { font-size: 14px; color: #666; }
     .sidebar.closed .profile img,
+    .sidebar.closed .profile h3,
     .sidebar.closed .profile p,
     .sidebar.closed .garis {
-      opacity: 0;
-      visibility: hidden;
+      opacity: 0; visibility: hidden;
     }
     .garis {
-      width: 100%;
-      height: 1px;
-      background-color: #000;
-      margin: 25px 0 35px 0;
+      width: 100%; height: 1px;
+      background-color: #ddd;
+      margin: 25px 0 35px;
     }
-    .menu {
-      list-style: none;
-      padding-left: 0;
-    }
-    .menu li {
-      margin-bottom: 10px;
-    }
+    .menu { list-style: none; padding-left: 0; }
+    .menu li { margin-bottom: 10px; }
     .menu a {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       text-decoration: none;
       padding: 9px 18px;
       border-radius: 10px;
-      font-size: 13px;
-      color: #000;
-      background: #FFD54F;
+      font-size: 13px; color: #000;
+      background: #FFD54F; font-weight: bold;
+      transition: background 0.3s, color 0.3s;
+    }
+    .menu a i { margin-right: 10px; }
+    .menu a:hover { background: #333; color: #fff; }
+    .menu .dash { background: #333; color: #fff; }
+    .sidebar.closed .menu a { padding: 12px; }
+    .sidebar.closed .menu-text { display: none; }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: relative;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .header h1 { font-size: 24px; color: #FFD54F; }
+    .logout-btn {
+      background: transparent;
+      border: 0;
+      padding: 8px 16px;
+      border-radius: 20px;
       font-weight: bold;
-      transition: background 0.3s ease, color 0.3s ease;
+      color: #000;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
     }
-    .menu a i {
-      margin-right: 10px;
+    .burger-btn {
+      position: absolute;
+      top: 5px; right: 5px;
+      background: transparent; border: 0;
+      padding: 8px 16px; border-radius: 20px;
+      font-weight: bold; cursor: pointer;
+      font-size: 16px; color: #000;
+      z-index: 2;
     }
-    .menu a:hover {
-      background: #333;
-      color: #fff;
-    }
-    .menu .dash {
-      background: #333;
-      color: #fff;
-    }
-    .sidebar.closed .menu a {
-      padding: 12px 12px;
-    }
-    .sidebar.closed .menu-text {
-      display: none;
-    }
+    .sidebar.closed .burger-btn { padding: 8px; }
+
     .main-container {
       flex: 1;
       display: flex;
@@ -476,8 +486,8 @@
 
     <!-- Konten Utama -->
     <div class="content">
-      <div class="shape hex1 tilt"></div>
-      <div class="shape hex3"></div>
+      {{-- <div class="shape hex1 tilt"></div>
+      <div class="shape hex3"></div> --}}
 
       <!-- Grid Anggota -->
       <div id="anggotaContainer">

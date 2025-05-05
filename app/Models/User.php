@@ -34,4 +34,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
+
+    public function KeuanganAccounts()
+{
+    return $this->hasMany(\App\Models\KeuanganAccount::class, 'user_id');
+}
 }
